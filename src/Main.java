@@ -6,9 +6,25 @@ public class Main {
         neiro.add(3);
         neiro.add(2);
         neiro.add(1);
-        boolean[] rrs = {true, false, true};
-        neiro.start(rrs);
+
+        boolean[] rrs = randInputGener(3);
+        neiro.fuckAss(rrs);
         neiro.print_res();
+    }
+
+
+    static boolean[] randInputGener(int i){
+        boolean[] res = new boolean[i];
+
+        for (int j = 0; j < i; j++) {
+            if (Math.random() < 0.5){
+                res[j] = true;
+            } else {
+                res[j] = false;
+            }
+        }
+
+        return res;
     }
 //
 //    static boolean[] comparison(String[] inp, String[] base){

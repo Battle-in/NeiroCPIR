@@ -15,45 +15,29 @@ public class Neiro {
         linkedList.add(size);
     }
 
-    public void start(boolean... inp) {
-
-
+    public void fuckAss(boolean... inp){
         layers = new Layer[linkedList.size()];
+        resDep = new LinkedList[linkedList.size()];
 
         for (int i = 0; i < linkedList.size(); i++) {
-            if (i < linkedList.size() - 1)
-                layers[i] = new Layer((int) linkedList.get(i), (int) linkedList.get(i + 1));
-            else
-                layers[i] = new Layer((int) linkedList.get(i), 0);
-        }
-        //забиваем слои
-
-        resDep = new LinkedList[layers.length];
-
-        for (int i = 0; i < resDep.length; i++) {
-            resDep[i] = new <Boolean>LinkedList();
-        }
-
-        for (int i = 0; i < layers.length; i++) {
-            for (int j = 0; j < layers[i].getSize(); j++) {
-                resDep[i].add(false);
+            resDep[i] = new LinkedList();
+            if (i < linkedList.size() -1) {
+                layers[i] = new Layer((int)linkedList.get(i) , (int)linkedList.get(i + 1));
+            } else {
+                layers[i] = new Layer((int)linkedList.get(i), 0);
             }
         }
-
-        resDep[0].clear();
-
-        for (int i = 0; i < inp.length; i++) {
+        for (int i = 1; i < layers.length; i++) {
+            for (int j = 0; j < layers[i].getSize(); j++) {
+                resDep[i].add((boolean) false);
+            }
+        }
+        for (int i = 0; i < inp.length; i++)
             resDep[0].add(inp[i]);
-        }
-
-        if (inp.length == layers[0].getSize()) {
-            start_use();
-        } else {
-            System.out.println("incorrect write input layer");
-        }
+        considerNetwork();
     }
 
-    private void start_use() {
+    private void considerNetwork(){
         for (int i = 1; i < resDep.length; i++) {
 
             for (int j = 0; j < resDep[i].size(); j++) {
@@ -68,12 +52,6 @@ public class Neiro {
                     c = k;
                 }
 
-
-                System.out.print("<" + mass + ">");
-
-//                System.out.println(resDep[i].size() - 1);
-//                System.out.println(c);
-
                 System.out.print(activate_sigma(mass));
 
                 if (activate_sigma(mass) <= layers[i].getValNeiron(j)) {
@@ -87,14 +65,8 @@ public class Neiro {
         }
     }
 
-
-//    boolean activate(int numLayer, int numNeiron) {
-//        double x = layers[numLayer - 1].getSamNeiron(numNeiron);
-//        return ((1 / (1 + Math.exp(x))) >= layers[numLayer].getValNeiron(numNeiron));
-//    }
-
     double activate_sigma(double sum) {
-        return  (1 / (1 + Math.exp(sum)));
+        return (1 / (1 + (1 / Math.exp(sum))));
     }
 
 
