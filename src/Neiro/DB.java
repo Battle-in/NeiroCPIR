@@ -1,9 +1,7 @@
 package Neiro;
-
-
 import java.sql.*;
 
-public class DB {
+class DB {
 
     private Connection connection;
     private String theme;
@@ -61,6 +59,10 @@ public class DB {
             e.printStackTrace();
         }
         return 0;
+    }
+
+    private static void write_neiro(){
+
     }
 
     private int check_word(String word) {

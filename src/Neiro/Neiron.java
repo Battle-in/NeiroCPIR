@@ -4,6 +4,10 @@ public class Neiron {
     double[] dep;
     double val;
 
+    public void setDep(int dep, double val) {
+        this.dep[dep] = val;
+    }
+
     public Neiron(int depSize) {
         dep = new double[depSize];
 
@@ -13,7 +17,7 @@ public class Neiron {
 
         //System.out.println(depSize);
 
-        val = Math.random();
+        val = 0.60;
     }
 
     public double getDep(int num){

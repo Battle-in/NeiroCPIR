@@ -17,6 +17,10 @@ public class Layer {
         return neirons[neiron].getDep(dep);
     }
 
+    void setDep(int neiron, int dep ,double value){
+        neirons[neiron].setDep(dep, value);
+    }
+
     int getDepSize(int neiron){
         return  neirons[neiron].getSizeDep();
     }
