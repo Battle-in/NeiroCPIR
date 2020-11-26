@@ -10,11 +10,9 @@ public class Neiro {
     boolean initalize;
 
     public Neiro() {
-        DB db = new DB();
         linkedList = new <Integer>LinkedList();
         result = new LinkedList();
     }
-
 
     public void add(int size) {
         linkedList.add(size);

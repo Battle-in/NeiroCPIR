@@ -1,7 +1,7 @@
 package Neiro;
 import java.sql.*;
 
-class DB {
+public class DB {
 
     private Connection connection;
     private String theme;
@@ -119,12 +119,71 @@ class DB {
         Statement st = null;
         try {
             st = connection.createStatement();
-            String sql = "INSERT INTO theme (theme)" +
-                    "VALUES('" + theme + "', ' 1 ') ";
+            String sql = "INSERT INTO theme (theme) VALUES('" + theme + "', ' 1 ') ";
             st.executeUpdate(sql);
             st.close();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
+    }
+
+    void pushNetWorck(String name, String json){
+        System.out.println(existNetWorck(name));
+        if (existNetWorck(name) == 1){
+            updateNetWorck(name, json);
+        } else {
+            writeNetWorck(name, json);
+        }
+    }
+
+    void updateNetWorck(String name, String json){
+        Statement st;
+        try {
+            st = connection.createStatement();
+            String sql = "UPDATE networcks SET json = '"+json+"' WHERE name = '"+name+"' ";
+            st.execute(sql);
+            st.close();
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+
+    }
+
+    int existNetWorck(String name){
+        Statement st;
+        try {
+            st = connection.createStatement();
+            String sql = "SELECT EXISTS(SELECT json FROM networcks WHERE name = '"+name+"')";
+            ResultSet r = st.executeQuery(sql);
+            return r.getInt(1);
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    void writeNetWorck(String name, String json) {
+        Statement st;
+        try {
+            st = connection.createStatement();
+            String sql = "INSERT INTO `networcks`(`name`,`json`) VALUES ('"+name+"','"+json+"')";
+            st.execute(sql);
+            st.close();
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
+
+    String readNW(String name){
+        Statement st;
+        try {
+            st = connection.createStatement();
+            String sql = "select json from networcks where (name = '"+name+"');";
+            ResultSet r = st.executeQuery(sql);
+            return r.getString(1);
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+        return "";
     }
 }

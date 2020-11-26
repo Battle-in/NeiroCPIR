@@ -4,15 +4,17 @@ import com.google.gson.Gson;
 public class Main {
     public static void main(String[] args) {
 
-        int inp_size = 6;
+        int inp_size = 10;
+        TextModule tm = new TextModule();
         Neiro neiro = new Neiro();
-        neiro.add(1);
+        neiro.add(inp_size);
+        neiro.add(6);
         neiro.add(2);
-        neiro.add(3);
         boolean[] inp = {true};
         neiro.initalize_new();
-        neiro.use(inp);
+        neiro.use(randInputGener(inp_size));
         neiro.print_res();
+        tm.writeNet(neiro,"neiro");
     }
 
 
