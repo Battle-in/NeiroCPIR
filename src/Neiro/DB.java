@@ -128,12 +128,10 @@ public class DB {
     }
 
     void pushNetWorck(String name, String json){
-        System.out.println(existNetWorck(name));
-        if (existNetWorck(name) == 1){
+        if (existNetWorck(name) == 1)
             updateNetWorck(name, json);
-        } else {
+        else
             writeNetWorck(name, json);
-        }
     }
 
     void updateNetWorck(String name, String json){

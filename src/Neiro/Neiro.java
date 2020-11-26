@@ -41,6 +41,41 @@ public class Neiro {
         }
     }
 
+    private double[] considerNetworkR() {
+        LinkedList<Double> ll = new LinkedList<>();
+        for (int i = 1; i < resDep.length; i++) {
+            for (int j = 0; j < resDep[i].size(); j++) {
+
+                double mass = 0;
+
+                for (int k = 0; k < resDep[i - 1].size(); k++) {
+                    if ((boolean) resDep[i - 1].get(k)) {
+                        mass += layers[i - 1].getDepNeiron(k, j);
+                    }
+                }
+
+                //System.out.print(activate_sigma(mass));
+                if (i == resDep.length - 1){
+                    ll.add(mass);
+                }
+
+                if (activate_sigma(mass) >= layers[i].getValNeiron(j))
+                    resDep[i].set(j, true);
+                else
+                    resDep[i].set(j, false);
+            }
+        }
+
+        Double[] a = ll.toArray(new Double[ll.size()]);
+        double[] b = new double[a.length];
+        for (int i = 0; i < a.length; i++) {
+            b[i] = a[i].doubleValue();
+        }
+
+        return b;
+    }
+
+
     public void initalize_new() {
         layers = new Layer[linkedList.size()];
         resDep = new LinkedList[linkedList.size()];
@@ -67,6 +102,9 @@ public class Neiro {
             System.out.println("Проинициализируйте нейро через метод initalize_new");
             return;
         }
+
+        resDep[0].clear();
+
         for (int i = 0; i < inp.length; i++)
             resDep[0].add(inp[i]);
         considerNetwork();
@@ -77,11 +115,17 @@ public class Neiro {
     }
 
     public void train() {
-        for (int i = resDep.length - 1; i >= 0; i++) {
-            for (int j = 0; j < resDep[i].size(); j++) {
-                System.out.println(i + " " + j);
+        double[] out = considerNetworkR();
+
+        for (int i = 0; i < out.length; i++) {
+            for (int j = layers.length - 2; j >= 0; j--) {
+                for (int k = 0; k < layers[j].getSize(); k++) {
+                    layers[j].setDep(k,j-1,weight_error());
+                }
             }
         }
+
+
     }
 
     double activate_sigma(double sum) {

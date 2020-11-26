@@ -6,15 +6,15 @@ public class Main {
 
         int inp_size = 10;
         TextModule tm = new TextModule();
-        Neiro neiro = new Neiro();
-        neiro.add(inp_size);
-        neiro.add(6);
-        neiro.add(2);
-        boolean[] inp = {true};
-        neiro.initalize_new();
-        neiro.use(randInputGener(inp_size));
+        Neiro neiro = tm.readNet("main");
+//        neiro.add(10);
+//        neiro.add(6);
+//        neiro.add(2);
+//        neiro.initalize_new();
+        boolean[] a  = {false,false};
+        neiro.train();
         neiro.print_res();
-        tm.writeNet(neiro,"neiro");
+        tm.writeNet(neiro,"main");
     }
 
 
