@@ -117,25 +117,22 @@ public class Neiro {
     public void train(double expected) {
         LinkedList[] out = considerNetworkR();
 
-        //System.out.println(out.length);
-//        for (int i = out.length - 1; i >= 0 ; i--) { //0 (1)
-//            //System.out.println(out[i].size() + " ");
-//            for (int j = 0; j < out[i].size(); j++) {  //
-//                if (expected != (double)out[i].get(j)){
-//                    for (int k = 0; k < layers[i].getSize(); k++) {
-//                        layers[i].setDep(j,k,weight_error(layers[i].getDepNeiron(k,j), (double)out[i].get(j), (double)out[i].get(j),expected));
-//                        System.out.println(weight_error(layers[i].getDepNeiron(j,k), (double)out[i].get(j), (double)out[i].get(j),expected));
-//                    }
-//                    System.out.println("fucl");
-//                }
-//            }
-//        }
+
+
         for (int i = out.length - 1; i >= 0 ; i--) {
+            System.out.println(i + ">>>>>");
             for (int j = 0; j < out[i].size(); j++) {
-                for (int k = 0; k < layers[i].getDepSize(j); k++) {
+                System.out.println(j + "}}}");
+                for (int k = 0; k < layers[i].getSize(); k++) {
+                    System.out.println(k + "]]]]");
                     if (expected != (double)out[i].get(j)){
+                        if (i == out.length)
                         layers[i - 1].setDep(k,j,weight_error(layers[i-1].getDepNeiron(j,k),activate_sigma((double)out[i].get(j)),activate_sigma((double)out[i].get(k)),expected));
+                        else {
+                            // дописать доп метод получения весов с обратным распространением https://www.youtube.com/watch?v=HA-F6cZPvrg&t=913s
+                        }
                     }
+
                 }
             }
             //System.out.println();

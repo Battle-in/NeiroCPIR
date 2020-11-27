@@ -12,10 +12,11 @@ public class Main {
         neiro.ll_sout();
         neiro.use(a);
         neiro.print_res();
-        for (int i = 0; i < 10000; i++)
-        neiro.train(0.0);
+        for (int i = 0; i < 14; i++)
+        neiro.train(0.3);
         neiro.use(a);
         neiro.print_all_dep();
+        neiro.print_res();
         tm.writeNet(neiro,"neiro");
     }
 
