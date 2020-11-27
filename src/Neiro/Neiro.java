@@ -20,6 +20,10 @@ public class Neiro {
 
 
     private void considerNetwork() {
+        LinkedList<Double>[] ll = new LinkedList[layers.length];
+        for (int i = 0; i < layers.length; i++) {
+            ll[i] = new LinkedList();
+        }
         for (int i = 1; i < resDep.length; i++) {
             for (int j = 0; j < resDep[i].size(); j++) {
 
@@ -41,8 +45,11 @@ public class Neiro {
         }
     }
 
-    private double[] considerNetworkR() {
-        LinkedList<Double> ll = new LinkedList<>();
+    private LinkedList[] considerNetworkR() {
+        LinkedList<Double>[] ll = new LinkedList[layers.length];
+        for (int i = 0; i < layers.length; i++) {
+            ll[i] = new LinkedList();
+        }
         for (int i = 1; i < resDep.length; i++) {
             for (int j = 0; j < resDep[i].size(); j++) {
 
@@ -50,14 +57,12 @@ public class Neiro {
 
                 for (int k = 0; k < resDep[i - 1].size(); k++) {
                     if ((boolean) resDep[i - 1].get(k)) {
-                        mass += layers[i - 1].getDepNeiron(k, j);
+                        mass += layers[i - 1].getDepNeiron(k, j); //* ll[i].get(k);
                     }
                 }
 
                 //System.out.print(activate_sigma(mass));
-                if (i == resDep.length - 1){
-                    ll.add(mass);
-                }
+                ll[i].add(mass);
 
                 if (activate_sigma(mass) >= layers[i].getValNeiron(j))
                     resDep[i].set(j, true);
@@ -66,13 +71,8 @@ public class Neiro {
             }
         }
 
-        Double[] a = ll.toArray(new Double[ll.size()]);
-        double[] b = new double[a.length];
-        for (int i = 0; i < a.length; i++) {
-            b[i] = a[i].doubleValue();
-        }
 
-        return b;
+        return ll;
     }
 
 
@@ -114,29 +114,43 @@ public class Neiro {
 
     }
 
-    public void train() {
-        double[] out = considerNetworkR();
+    public void train(double expected) {
+        LinkedList[] out = considerNetworkR();
 
-        for (int i = 0; i < out.length; i++) {
-            for (int j = layers.length - 2; j >= 0; j--) {
-                for (int k = 0; k < layers[j].getSize(); k++) {
-                    layers[j].setDep(k,j-1,weight_error());
+        //System.out.println(out.length);
+//        for (int i = out.length - 1; i >= 0 ; i--) { //0 (1)
+//            //System.out.println(out[i].size() + " ");
+//            for (int j = 0; j < out[i].size(); j++) {  //
+//                if (expected != (double)out[i].get(j)){
+//                    for (int k = 0; k < layers[i].getSize(); k++) {
+//                        layers[i].setDep(j,k,weight_error(layers[i].getDepNeiron(k,j), (double)out[i].get(j), (double)out[i].get(j),expected));
+//                        System.out.println(weight_error(layers[i].getDepNeiron(j,k), (double)out[i].get(j), (double)out[i].get(j),expected));
+//                    }
+//                    System.out.println("fucl");
+//                }
+//            }
+//        }
+        for (int i = out.length - 1; i >= 0 ; i--) {
+            for (int j = 0; j < out[i].size(); j++) {
+                for (int k = 0; k < layers[i].getDepSize(j); k++) {
+                    if (expected != (double)out[i].get(j)){
+                        layers[i - 1].setDep(k,j,weight_error(layers[i-1].getDepNeiron(j,k),activate_sigma((double)out[i].get(j)),activate_sigma((double)out[i].get(k)),expected));
+                    }
                 }
             }
+            //System.out.println();
         }
-
-
     }
 
     double activate_sigma(double sum) {
         return (1 / (1 + (1 / Math.exp(sum))));
     }
 
-    double weight_error(double weight, double inp_weight, double sum, double epected) {
-        return weight - inp_weight * sigma_error(sum, epected) * 0.2;
+    double weight_error(double weight, double inp_weight, double sum, double expected) {
+        return weight - inp_weight * sigma_error(sum - expected) * 0.1;
     }
 
-    double sigma_error(double sum, double expected) {
+    double sigma_error(double sum) {
         double x = activate_sigma(sum);
         return x * (x * (1 - x));
     }
@@ -180,7 +194,30 @@ public class Neiro {
             System.out.println();
         }
     }
+
+    public void ll_sout(){
+        LinkedList[] a = considerNetworkR();
+        for (int l = 0; l < a.length; l++) {
+            for (int i = 0; i < a[l].size(); i++) {
+                System.out.print(a[l].get(i) + "//");
+            }
+            System.out.println();
+        }
+    }
+
+    public void print_all_dep(){
+        for (int i = 0; i < layers.length; i++) {
+            for (int j = 0; j < layers[i].getSize(); j++) {
+                for (int k = 0; k < layers[i].getDepSize(j); k++) {
+                    System.out.print(layers[i].getDepNeiron(j,k) + " ");
+                }
+                System.out.print("///");
+            }
+            System.out.println();
+        }
+    }
 }
+
 
 /*
 SQLки
