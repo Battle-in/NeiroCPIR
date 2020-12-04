@@ -3,9 +3,13 @@ import java.util.Scanner;
 import Neiro.*;
 
 public class Cvazi {
+    String neiroName;
+
     public static void main(String[] args) {
-        Cvazi cvazi = new Cvazi();
-        cvazi.strt();
+        DB db = new DB();
+        System.out.println(db.getWordsSize());
+//        Cvazi cvazi = new Cvazi();
+//        cvazi.strt();
     }
 
     void strt(){
@@ -42,14 +46,34 @@ public class Cvazi {
         int y;
         while (!out){
             y = sc.nextInt();
-            //System.out.println(y);
             if (y == 0)
                 out = true;
             else
-                ll.add(sc.nextInt());
+                ll.add(y);
         }
-        System.out.println("quitt");
 
+        TextModule textModule = new TextModule();
+        Neiro neiro = new Neiro();
+        for (int i = 0; i < ll.size(); i++) {
+            neiro.add((int)ll.get(i));
+        }
+        boolean[] inp = makeRandInp((int)ll.get(0));
+        neiro.initalize_new();
+        neiro.use(inp);
+        textModule.writeNet(neiro, neiroName);
+        neiro.print_res();
+    }
+
+    boolean[] makeRandInp(int i){
+        boolean[] res = new boolean[i];
+        for (int j = 0; j < i; j++) {
+            if (Math.random() > 0.5){
+                res[j] = true;
+            } else {
+                res[j] = false;
+            }
+        }
+        return res;
     }
 
     void insertData(){
@@ -89,6 +113,10 @@ public class Cvazi {
     }
 
     void use(){
+        DB db = new DB();
+        TextModule textModule = new TextModule();
+        Neiro neiro = textModule.readNet(neiroName);
+        neiro.use(makeRandInp(db.getWordsSize()));
 
     }
 
@@ -100,5 +128,6 @@ public class Cvazi {
                 "\n";
         System.out.println(help);
     }
+
 
 }

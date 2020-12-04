@@ -184,4 +184,16 @@ public class DB {
         }
         return "";
     }
+
+    public int getWordsSize(){
+        Statement st;
+        try {
+            st = connection.createStatement();
+            ResultSet r = st.executeQuery("select count (*) from words ");
+            return r.getInt(1);
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return 0;
+    }
 }
