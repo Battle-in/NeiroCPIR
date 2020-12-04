@@ -120,11 +120,11 @@ public class Neiro {
 
 
         for (int i = out.length - 1; i >= 0 ; i--) {
-            System.out.println(i + ">>>>>");
+            //System.out.println(i + ">>>>>");
             for (int j = 0; j < out[i].size(); j++) {
-                System.out.println(j + "}}}");
+                //System.out.println(j + "}}}");
                 for (int k = 0; k < layers[i].getSize(); k++) {
-                    System.out.println(k + "]]]]");
+                    //System.out.println(k + "]]]]");
                     if (expected != (double)out[i].get(j)){
                         if (i == out.length)
                         layers[i - 1].setDep(k,j,weight_error(layers[i-1].getDepNeiron(j,k),activate_sigma((double)out[i].get(j)),activate_sigma((double)out[i].get(k)),expected));

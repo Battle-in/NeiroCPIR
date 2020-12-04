@@ -7,7 +7,7 @@ public class Main {
         int inp_size = 10;
         TextModule tm = new TextModule();
         Neiro neiro = tm.readNet("neiro");
-        boolean[] a  = {false,true,false};
+        boolean[] a  = {false,true,false,false,false};
        // neiro.train();
         neiro.ll_sout();
         neiro.use(a);
